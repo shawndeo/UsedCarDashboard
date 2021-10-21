@@ -1,4 +1,2 @@
-numpy==1.7.0
 pandas==1.2.4
-scipy==1.7.1
 streamlit==0.88.0
