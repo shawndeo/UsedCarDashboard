@@ -1,5 +1,5 @@
-
 import pandas as pd
+import sklearn
 from sklearn import linear_model
 import streamlit as st
 
@@ -8,10 +8,13 @@ st.title('Used Car Price Estimator')
 st.info("""
 • Thus far, all data has been collected manually using CarGurus.com. \n
 • All vehicles for which data was collected were in the price range of $0 to $30,000. \n
-• Filtering options WILL have an impact on coefficients.
+• Filtering options WILL have an impact on coefficients. \n
+• All vehicles for which data were collected were located in the state of Texas.
 """)
 
 data = pd.read_csv('UsedCarsWorking.csv')
+
+st.sidebar.title('Configurations')
 
 st.sidebar.header('Filter')
 
@@ -98,6 +101,8 @@ vehicle_rental = st.sidebar.checkbox('Was the vehicle ever used as a rental?')
 
 vehicle_fleet = st.sidebar.checkbox('Was the vehicle ever used in a fleet?')
 
+st.sidebar.button('Reset')
+
 st.header('Original Data: ')
 
 st.dataframe(data)
@@ -131,6 +136,7 @@ st.title(f'Estimated Vehicle Worth: ${round(value[0], 2)}')
 
 st.header('Notes: ')
 st.write("""
+• 10/21/2021 12:17pm: Categorical filters now working. Adding reset button to filters and features.
 • 10/20/2021 10:21pm: Added sort features. \n
 • 10/20/2021 09:38pm: First iteration. Not surprised there's an inverse relationship between vehicle age and price (-$180 per year).
 Mileage has little to no effect but this makes sense because a lot of older cars are sought after regardless of mileage.
@@ -145,4 +151,6 @@ I'm actually surprised at the positive relationship between rental / fleet owner
 
 st.write(vehicle_body)
 
-#spam
+st.write(f'pandas version: {pd.__version__}')
+st.write(f'sklearn version: {sklearn.__version__}')
+st.write(f'streamlit version: {st.__version__}')
