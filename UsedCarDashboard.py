@@ -18,10 +18,8 @@ st.sidebar.title('Configurations')
 
 st.sidebar.header('Filter')
 
-st.sidebar.warning('None of these filtering options are currently implemented.')
-
 vehicle_body = st.sidebar.selectbox('Body Style: ',
-                                        ('All', 'Convertible', 'Coupe', 'SUV'))
+                                        ('All', 'Convertible', 'Coupe', 'Minivan', 'Pickup', 'Sedan', 'SUV'))
 
 if vehicle_body == 'All':
     data = data
@@ -29,14 +27,25 @@ elif vehicle_body == 'Coupe':
     data = data[data['Body'] == 'Coupe']
 elif vehicle_body == 'Convertible':
     data = data[data['Body'] == 'Convertible']
+elif vehicle_body == 'Minivan':
+    data = data[data['Body'] == 'Minivan']
+elif vehicle_body == 'Pickup':
+    data = data[data['Body'] == 'Pickup']
+elif vehicle_body == 'Sedan':
+    data = data[data['Body'] == 'Sedan']
 elif vehicle_body == 'SUV':
     data = data[data['Body'] == 'SUV']
 
 vehicle_drivetrain = st.sidebar.selectbox('Drivetrain: ',
-                                            ('All', '4WD', 'AWD', 'FWD', 'RWD'))
+                                            ('All', '4WD', '4x2', 'AWD', 'FWD', 'RWD'))
 
-
-if vehicle_drivetrain == 'AWD':
+if vehicle_drivetrain == 'All':
+    data = data
+elif vehicle_drivetrain == '4WD':
+    data = data[data['Drivetrain'] == '4WD']
+elif vehicle_drivetrain == '4x2':
+    data = data[data['Drivetrain'] == '4x2']
+elif vehicle_drivetrain == 'AWD':
     data = data[data['Drivetrain'] == 'AWD']
 elif vehicle_drivetrain == 'FWD':
     data = data[data['Drivetrain'] == 'FWD']
@@ -62,7 +71,7 @@ elif vehicle_engine == 'V8':
     data = data[data['Engine'] == 'V8']
 
 vehicle_origin = st.sidebar.selectbox('Manufacturer Origin: ',
-                                        ('All', 'Germany', 'Italy', 'Japan', 'Korea', 'UK', 'USA'))
+                                        ('All', 'Germany', 'Italy', 'Japan', 'South Korea', 'UK', 'USA'))
 
 if vehicle_origin == 'All':
     data = data
@@ -126,13 +135,11 @@ Variable 09: Fleet History - {vehicle_fleet}
 """)
 
 price_predictor.coef_
-
 st.write('Intercept: ')
 price_predictor.intercept_
 value = price_predictor.predict([[vehicle_age, vehicle_mileage, vehicle_manual, vehicle_horsepower, vehicle_displacement, vehicle_mpg, vehicle_accidents, vehicle_owners, vehicle_rental, vehicle_fleet]])
 
 st.title(f'Estimated Vehicle Worth: ${round(value[0], 2)}')
-#st.write(value[0])
 
 st.header('Notes: ')
 st.write("""
@@ -148,9 +155,3 @@ Accident history having an inverse relationship makes absolute sense but I was e
 More owners has a negative impact on price (-$79 per owner).
 I'm actually surprised at the positive relationship between rental / fleet ownership. Perhaps because these vehicles were professionally kept / expected to be well maintained.
 """)
-
-st.write(vehicle_body)
-
-st.write(f'pandas version: {pd.__version__}')
-st.write(f'sklearn version: {sklearn.__version__}')
-st.write(f'streamlit version: {st.__version__}')
